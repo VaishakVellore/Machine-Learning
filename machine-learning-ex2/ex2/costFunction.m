@@ -19,8 +19,26 @@ grad = zeros(size(theta));
 %
 % Note: grad should have the same dimensions as theta
 %
+J = 0;
+for i=1:m,
+	z = theta'*X(i, :)';
+	hx = 1/(1+exp(-z));
+	v1 = -y(i) * log(hx);
+	v2 = -(1-y(i)) * log( 1 - hx );
+	J = J + v1 + v2;
+end;
+J = J/m;
 
-
+for j=1:size(theta,1),
+  grad(j) = 0;
+  for i=1:m,
+	z = theta'*X(i, :)';
+	hx = 1/(1+exp(-z));
+	v = (hx - y(i)) * X(i,j);
+	grad(j) = grad(j) + v;
+  end;
+  grad(j) = grad(j) / m;
+end;
 
 
 
